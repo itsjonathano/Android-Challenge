@@ -4,68 +4,92 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputLayout
-import com.podium.technicalchallenge.DemoViewModel
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.podium.technicalchallenge.MainActivity
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentDashboardBinding
-import com.podium.technicalchallenge.entity.MovieEntity
+import com.podium.technicalchallenge.ui.home.HomepageFragment
 
 class DashboardFragment : Fragment() {
 
-    private val viewModel: DemoViewModel by activityViewModels()
+    private var mediator : TabLayoutMediator? = null
+    private lateinit var tabView : View
+
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    var _top5Adapter: MoviesAdapter? = null
-    private val top5Adapter get() = _top5Adapter!!
-
-    private lateinit var tvTitle: TextView
+    var overviewPagerStateAdapter: DashboardPagerAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+
+        val fragments = ArrayList<Fragment> ()
+        fragments.add(HomepageFragment.newInstance())
+        fragments.add(HomepageFragment.newInstance())
+        fragments.add(HomepageFragment.newInstance())
+        // frag b
+        // frag c
+
+        overviewPagerStateAdapter = DashboardPagerAdapter(this, fragments)
+
+
+        binding.pager.adapter = overviewPagerStateAdapter
+        //binding.pager.setPageTransformer(ZoomOutPageTransformer())
+        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+            }
+        })
+        //binding.pager.reduceDragSensitivity()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    override fun onStart() {
+        super.onStart()
 
-        _top5Adapter = MoviesAdapter(this)
-        binding.top5MoviesList.adapter = top5Adapter
-        binding.top5MoviesList.layoutManager = horizontalLayoutManager
-
-        viewModel.liveTop5Movies.observe(viewLifecycleOwner, {it ->
-            it?.let {
-                top5Adapter.updateData(it)
+        (activity as? MainActivity)?.apply {
+            tabView = layoutInflater.inflate(R.layout.tablayout, this.binding.coordinatorLayout,false)
+            this.binding.coordinatorLayout.addView(tabView)
+        }
+        mediator = TabLayoutMediator(tabView.findViewById(R.id.tabLayout), binding.pager) { tab, position ->
+            tab.apply {
+                when(position){
+                    0 -> {
+                        text = getString(R.string.title_home)
+                        setIcon(R.drawable.ic_home_black_24dp)
+                    }
+                    1 -> {
+                        text = getString(R.string.title_discover)
+                        setIcon(R.drawable.ic_baseline_adjust_24)
+                    }
+                    2 -> {
+                        text = getString(R.string.title_search)
+                        setIcon(R.drawable.ic_baseline_search_24)
+                    }
+                }
             }
+        }
+
+        mediator!!.attach()
+
+        tabView.findViewById<TabLayout>(R.id.tabLayout).addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {}
         })
-
-        viewModel.getTop5PopularMovies()
-
-        viewModel.getMovies()
     }
-
-    fun displayMovieInfo(movie: MovieEntity) {
-        viewModel.liveSelectedMovie.value = movie
-        findNavController().navigate(R.id.movieInfoFragment)
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _top5Adapter = null // prevent memory leak
     }
 
     companion object {
