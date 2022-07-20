@@ -10,5 +10,9 @@
         android:name="com.podium.technicalchallenge.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/movieInfoFragment"
+        android:name="com.podium.technicalchallenge.ui.movieInfo.MovieInfoFragment"
+        android:label="MovieInfoFragment" />
 
 </navigation>
