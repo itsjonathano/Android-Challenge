@@ -28,3 +28,11 @@ data class Director(
     val name: String
 )
 
+data class GenresResponse(
+    val data: Genres
+)
+
+data class Genres(
+    val genres: List<String>
+)
+

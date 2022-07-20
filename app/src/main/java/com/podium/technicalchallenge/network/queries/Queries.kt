@@ -18,7 +18,7 @@ object Queries {
 """
 
     // Get All Genres available in the API
-    fun getGenres() = """
+    fun getGenresQuery() = """
       query GetMoviesQuery {
       genres
     }
@@ -27,7 +27,7 @@ object Queries {
         
     """
 
-    fun getMoviesByAGenre(genre: String) = """
+    fun getMoviesByAGenreQuery(genre: String) = """
     query GetMoviesQuery {
       movies (limit:5, orderBy:"popularity", sort: DESC) {
         title

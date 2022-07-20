@@ -2,13 +2,15 @@ package com.podium.technicalchallenge.ui.dashboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.podium.technicalchallenge.databinding.ItemMovieBinding
 import com.podium.technicalchallenge.entity.MovieEntity
+import com.podium.technicalchallenge.ui.discover.DiscoverFragment
 import com.podium.technicalchallenge.ui.home.HomepageFragment
 import com.squareup.picasso.Picasso
 
-class MoviesAdapter(val fragment: HomepageFragment): RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MoviesAdapter(val fragment: Fragment): RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     var items: List<MovieEntity> = listOf()
 
@@ -38,7 +40,14 @@ class MoviesAdapter(val fragment: HomepageFragment): RecyclerView.Adapter<Movies
         holder.binding.movie = movie
         Picasso.get().load(movie.posterPath).into(holder.binding.movieImg)
         holder.binding.movieImg.setOnClickListener {
-            fragment.displayMovieInfo(movie)
+            when (fragment) {
+                is HomepageFragment -> {
+                    fragment.displayMovieInfo(movie)
+                }
+                is DiscoverFragment -> {
+                    fragment.displayMovieInfo(movie)
+                }
+            }
         }
     }
 

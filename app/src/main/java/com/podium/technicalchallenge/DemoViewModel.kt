@@ -19,7 +19,7 @@ class DemoViewModel : ViewModel() {
 
     val liveAllMovies = MutableLiveData<List<MovieEntity>?>()
 
-    val liveLastUpdated = MutableLiveData<String?>()
+    val liveGenres = MutableLiveData<List<String>?>()
 
     fun getTop5PopularMovies() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,6 +40,25 @@ class DemoViewModel : ViewModel() {
         }
     }
 
+    fun getGenres() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = try {
+                Repo.getInstance().getGenres()
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
+            when (result) {
+                is Result.Success<List<String>?> -> {
+                    Log.d(TAG, "genres= " + result.data)
+                    liveGenres.postValue(result.data)
+                }
+                else -> {
+                    Log.e(TAG, "genres= " + result)
+                }
+            }
+        }
+    }
+
     fun getMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = try {
@@ -51,7 +70,6 @@ class DemoViewModel : ViewModel() {
                 is Result.Success<List<MovieEntity>?> -> {
                     Log.d(TAG, "movies= " + result.data)
                     liveAllMovies.postValue(result.data)
-                    liveLastUpdated.postValue(LocalDateTime.now().toString())
                 }
                 else -> {
                     Log.e(TAG, "movies= " + result)

@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.podium.technicalchallenge.MainActivity
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentDashboardBinding
+import com.podium.technicalchallenge.ui.discover.DiscoverFragment
 import com.podium.technicalchallenge.ui.home.HomepageFragment
 
 class DashboardFragment : Fragment() {
@@ -29,8 +30,7 @@ class DashboardFragment : Fragment() {
 
         val fragments = ArrayList<Fragment> ()
         fragments.add(HomepageFragment.newInstance())
-        fragments.add(HomepageFragment.newInstance())
-        fragments.add(HomepageFragment.newInstance())
+        fragments.add(DiscoverFragment.newInstance())
         // frag b
         // frag c
 
