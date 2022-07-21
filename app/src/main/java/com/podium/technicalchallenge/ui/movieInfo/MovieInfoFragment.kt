@@ -8,7 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
 import com.podium.technicalchallenge.DemoViewModel
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentMovieInfoBinding
@@ -28,15 +31,30 @@ class MovieInfoFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movie = viewModel.liveSelectedMovie.value
 
-        val verticalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        //val verticalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val layoutManager = GridLayoutManager(requireContext(), 2)
 
         castAdapter = CastAdapter()
 
         binding.movieCast.adapter = castAdapter
-        binding.movieCast.layoutManager = verticalLayoutManager
+
+        binding.movieCast.layoutManager = layoutManager
 
         viewModel.liveSelectedMovie.value?.let {
             castAdapter?.updateData(it.cast)
+        }
+
+        binding.genreButtonsList.removeAllViews()
+
+
+        viewModel.liveSelectedMovie.value?.genres?.forEach {
+            val chip = layoutInflater.inflate(R.layout.standalone_chip, binding.genreButtonsList, false) as Chip
+            chip.text = it
+            chip.setOnClickListener {
+                viewModel.liveGenresSelected.value = listOf(chip.text.toString())
+                findNavController().navigate(R.id.discoverFragment)
+            }
+            binding.genreButtonsList.addView(chip as View)
         }
 
         Picasso.get().load(viewModel.liveSelectedMovie.value?.posterPath).into(binding.moviePosterImage)
@@ -45,6 +63,11 @@ class MovieInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    fun genreLinkFormat(genres: List<String>) {
+
     }
 
 

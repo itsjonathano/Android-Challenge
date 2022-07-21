@@ -8,6 +8,7 @@ import com.podium.technicalchallenge.databinding.ItemMovieBinding
 import com.podium.technicalchallenge.entity.MovieEntity
 import com.podium.technicalchallenge.ui.discover.DiscoverFragment
 import com.podium.technicalchallenge.ui.home.HomepageFragment
+import com.podium.technicalchallenge.ui.search.SearchFragment
 import com.squareup.picasso.Picasso
 
 class MoviesAdapter(val fragment: Fragment): RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
@@ -45,6 +46,9 @@ class MoviesAdapter(val fragment: Fragment): RecyclerView.Adapter<MoviesAdapter.
                     fragment.displayMovieInfo(movie)
                 }
                 is DiscoverFragment -> {
+                    fragment.displayMovieInfo(movie)
+                }
+                is SearchFragment -> {
                     fragment.displayMovieInfo(movie)
                 }
             }

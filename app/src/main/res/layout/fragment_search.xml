@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.podium.technicalchallenge.DemoViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.dashboard.DashboardFragment">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="Enter a Movie Title Here"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+        </androidx.appcompat.widget.SearchView>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sortingButtonsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@id/searchBar">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_alphabetical"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_reverse_alphabetical"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_most_popular"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_least_popular"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_newest"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_sort_oldest"
+                style="@style/Widget.MyApp.Chip.Choice">
+            </com.google.android.material.chip.Chip>
+        </com.google.android.material.chip.ChipGroup>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filteredMoviesList"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:paddingBottom="50dp"
+            android:numColumns="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sortingButtonsList"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

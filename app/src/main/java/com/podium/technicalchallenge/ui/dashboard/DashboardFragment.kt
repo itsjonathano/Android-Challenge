@@ -13,6 +13,7 @@ import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentDashboardBinding
 import com.podium.technicalchallenge.ui.discover.DiscoverFragment
 import com.podium.technicalchallenge.ui.home.HomepageFragment
+import com.podium.technicalchallenge.ui.search.SearchFragment
 
 class DashboardFragment : Fragment() {
 
@@ -31,21 +32,19 @@ class DashboardFragment : Fragment() {
         val fragments = ArrayList<Fragment> ()
         fragments.add(HomepageFragment.newInstance())
         fragments.add(DiscoverFragment.newInstance())
-        // frag b
-        // frag c
+        fragments.add(SearchFragment.newInstance())
 
         overviewPagerStateAdapter = DashboardPagerAdapter(this, fragments)
 
-
         binding.pager.adapter = overviewPagerStateAdapter
-        //binding.pager.setPageTransformer(ZoomOutPageTransformer())
         binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
+                (activity as MainActivity).apply {
+                }
             }
         })
-        //binding.pager.reduceDragSensitivity()
+        binding.pager.isUserInputEnabled = false;
 
         return binding.root
     }

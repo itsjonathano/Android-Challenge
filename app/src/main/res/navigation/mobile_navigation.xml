@@ -14,5 +14,9 @@
         android:id="@+id/movieInfoFragment"
         android:name="com.podium.technicalchallenge.ui.movieInfo.MovieInfoFragment"
         android:label="MovieInfoFragment" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.podium.technicalchallenge.ui.discover.DiscoverFragment"
+        android:label="DiscoverFragment" />
 
 </navigation>

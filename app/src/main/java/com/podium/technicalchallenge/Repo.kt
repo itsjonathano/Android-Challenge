@@ -17,6 +17,22 @@ sealed class Result<out R> {
 
 class Repo {
 
+    suspend fun searchMovies(query: String, querySort: Queries.QuerySort): Result<List<MovieEntity>?> {
+        val paramObject = JSONObject()
+        paramObject.put(
+            "query", Queries.searchMovies(query, querySort)
+        )
+
+        val response = ApiClient.getInstance().provideRetrofitClient().create(GraphQLService::class.java).postGetMovies(paramObject.toString())
+        val jsonBody = response.body()
+        val data = Gson().fromJson(jsonBody, MovieResponse::class.java)
+        return if (data != null) {
+            Result.Success(data.data.movies)
+        } else {
+            Result.Error(java.lang.Exception())
+        }
+    }
+
     suspend fun getTop5PopularMovies(): Result<List<MovieEntity>?> {
         val paramObject = JSONObject()
         paramObject.put(

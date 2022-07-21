@@ -5,26 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.podium.technicalchallenge.DemoViewModel
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentDiscoverBinding
 import com.podium.technicalchallenge.entity.MovieEntity
 import com.podium.technicalchallenge.ui.dashboard.MoviesAdapter
-import com.podium.technicalchallenge.ui.home.HomepageFragment
 import androidx.recyclerview.widget.GridLayoutManager
-
-
-
 
 class DiscoverFragment: Fragment() {
 
@@ -57,11 +48,27 @@ class DiscoverFragment: Fragment() {
         viewModel.liveGenres.observe(viewLifecycleOwner,  {
             binding.genreButtonsList.removeAllViews()
             it?.forEach {
-                //var chip = ChipDrawable.createFromResource(requireContext(), R.xml.standalone_chip)
                 val chip = layoutInflater.inflate(R.layout.standalone_chip, binding.genreButtonsList, false) as Chip
                 chip.text = it
+                viewModel.liveGenresSelected.value?.let {
+                }
                 binding.genreButtonsList.addView(chip as View)
             }
+
+            // Set the previous selected genres when coming back to the page or from the movie info
+            // page
+            binding.genreButtonsList.forEach {btn ->
+                when (btn) {
+                    is Chip -> {
+                        viewModel.liveGenresSelected.value?.let {genres ->
+                            if (genres.contains(btn.text)) btn.isChecked = true
+
+                        }
+                    }
+                }
+            }
+
+
         })
 
         binding.genreButtonsList.setOnCheckedStateChangeListener { group, checkedIds ->
@@ -71,6 +78,7 @@ class DiscoverFragment: Fragment() {
                 var genre = binding.genreButtonsList.findViewById<Chip>(id)
                 selectedGenres.add(genre.text.toString())
             }
+            viewModel.liveGenresSelected.value = selectedGenres
             val res = searchByGenres(selectedGenres)
 
             res?.let { _filteredAdapter?.updateData(it) }
