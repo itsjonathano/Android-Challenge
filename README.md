@@ -2,7 +2,7 @@
 
 Browse Movies and get recommendations based on genres of interest and a search. Uses Apollo/GraphQL for Querying Movies from an API.
 
-# # Preview
+## Preview
 
 ![jonathan_movie_app_movie_info](https://user-images.githubusercontent.com/109547335/180341568-09b1365a-975a-4019-b696-a7e6f454b5d0.png)
 ![jonathan_movie_app_search](https://user-images.githubusercontent.com/109547335/180341571-a3ebbee4-aaef-48e0-be4f-0bceb039661e.png)
