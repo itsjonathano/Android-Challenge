@@ -14,10 +14,23 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.NoBar"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+
     <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
         ...
         <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
     </style>
+
+    <style name="AppToolBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
+
 
     <!-- Disabling elevation overlays because when chip's default background/surface
          composite are combined with elevation overlays in a highly elevated dialog,

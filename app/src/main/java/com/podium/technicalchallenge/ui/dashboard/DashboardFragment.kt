@@ -1,13 +1,17 @@
 package com.podium.technicalchallenge.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.podium.technicalchallenge.DemoViewModel
 import com.podium.technicalchallenge.MainActivity
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentDashboardBinding
@@ -22,6 +26,8 @@ class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: DemoViewModel by activityViewModels()
 
     var overviewPagerStateAdapter: DashboardPagerAdapter? = null
 
@@ -45,6 +51,16 @@ class DashboardFragment : Fragment() {
             }
         })
         binding.pager.isUserInputEnabled = false;
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("discover")
+            ?.observe(viewLifecycleOwner) {
+                if (it == true)
+                    binding.pager.setCurrentItem(1, false)
+            }
+
+        viewModel.getTop5PopularMovies()
+        viewModel.getGenres()
+        viewModel.getMovies()
 
         return binding.root
     }
@@ -86,9 +102,22 @@ class DashboardFragment : Fragment() {
         })
     }
 
+    override fun onStop() {
+        (activity as? MainActivity)?.apply {
+//            tabView.findViewById<com.google.android.material.tabs.TabLayout>(R.id.tabLayout).removeOnTabSelectedListener()
+            mediator?.detach()
+            mediator = null
+            this.binding.coordinatorLayout.removeView(tabView)
+
+        }
+
+        super.onStop()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        overviewPagerStateAdapter = null
     }
 
     companion object {

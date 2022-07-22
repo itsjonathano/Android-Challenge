@@ -2,6 +2,8 @@
 <layout>
 
     <data>
+
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.podium.technicalchallenge.DemoViewModel" />
@@ -25,19 +27,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Discover By Genre"
+                android:text="@string/title_discover_header"
                 android:textSize="24dp"></TextView>
 
-            <!--app:singleSelection="true"-->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/genreButtonsList"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20sp"
-                app:layout_constraintTop_toBottomOf="@id/discoverTitle">
+                app:layout_constraintTop_toBottomOf="@id/discoverTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
             </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/searchPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{viewModel.liveGenresSelected.size == 0 ?  View.VISIBLE : View.GONE}"
+            android:text="@string/prompt_discover"
+            app:layout_constraintBottom_toBottomOf="parent"></TextView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filteredMoviesList"

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Jonathan Movie App</string>
     <string name="title_home">Home</string>
+    <string name="title_home_header">Top 5 Movies</string>
+    <string name="title_discover_header">Discover Movies By Genre</string>
+    <string name="title_search_header">Search For Movies</string>
+    <string name="title_recommendations_header">Things We Think You Also Might Like</string>
     <string name="title_discover">Discover</string>
     <string name="title_search">Search</string>
     <string name="title_dashboard">Dashboard</string>
@@ -11,5 +15,7 @@
     <string name="button_sort_least_popular">Least Popular</string>
     <string name="button_sort_newest">Newest</string>
     <string name="button_sort_oldest">Oldest</string>
+    <string name="prompt_discover">Select multiple genres to get movies that fit your tastes.</string>
+    <string name="prompt_search">Search for a movie with the search bar above.</string>
 
 </resources>

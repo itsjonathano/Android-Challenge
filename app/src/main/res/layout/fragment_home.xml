@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.podium.technicalchallenge.DemoViewModel" />
@@ -25,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Top 5 Movies"
+                android:text="@string/title_home_header"
                 android:textSize="24dp">
             </TextView>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -33,9 +34,26 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/top5MoviesList"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/top5MoviesSection"
-            app:layout_constraintBottom_toBottomOf="parent"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/recomendationsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/top5MoviesList"
+            android:text="@string/title_recommendations_header"
+            android:visibility="@{viewModel.liveLastGenreClicked != null ?  View.VISIBLE : View.GONE}"
+            android:textSize="24dp">
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommendedMoviesList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recomendationsTitle"
             >
         </androidx.recyclerview.widget.RecyclerView>
 

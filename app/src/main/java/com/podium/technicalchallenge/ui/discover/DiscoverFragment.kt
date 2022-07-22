@@ -43,8 +43,6 @@ class DiscoverFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getGenres()
-
         viewModel.liveGenres.observe(viewLifecycleOwner,  {
             binding.genreButtonsList.removeAllViews()
             it?.forEach {

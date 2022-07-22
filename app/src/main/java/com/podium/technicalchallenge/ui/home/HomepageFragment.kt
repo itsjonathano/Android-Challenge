@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.podium.technicalchallenge.DemoViewModel
 import com.podium.technicalchallenge.R
@@ -23,6 +24,9 @@ class HomepageFragment : Fragment() {
     var _top5Adapter: MoviesAdapter? = null
     private val top5Adapter get() = _top5Adapter!!
 
+    var _recommendedAdapter: MoviesAdapter? = null
+    private val recommendedAdapter get() = _recommendedAdapter!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -33,21 +37,35 @@ class HomepageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val top5LayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         _top5Adapter = MoviesAdapter(this)
         binding.top5MoviesList.adapter = top5Adapter
-        binding.top5MoviesList.layoutManager = horizontalLayoutManager
+        binding.top5MoviesList.layoutManager = top5LayoutManager
 
-        viewModel.liveTop5Movies.observe(viewLifecycleOwner, {it ->
+        val recLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        _recommendedAdapter = MoviesAdapter(this)
+        binding.recommendedMoviesList.adapter = recommendedAdapter
+        binding.recommendedMoviesList.layoutManager = recLayoutManager
+
+        // Make a recommendation based on genre you clicked in the session
+        // Get 10 Movies to show as a recommendation to the user
+        viewModel.liveLastGenreClicked.observe(viewLifecycleOwner, {
+            it?.let {genre ->
+                val filteredMovies = viewModel.liveAllMovies.value?.filter { movie ->
+                    movie.genres.contains(genre) && viewModel.liveTop5Movies.value?.contains(movie) == false
+                }?.take(10)
+                filteredMovies?.let { recommendedAdapter.updateData(it) }
+            }
+        })
+
+        viewModel.liveTop5Movies.observe(viewLifecycleOwner, {
             it?.let {
                 top5Adapter.updateData(it)
             }
         })
 
-        viewModel.getTop5PopularMovies()
-
-        viewModel.getMovies()
     }
 
     fun displayMovieInfo(movie: MovieEntity) {
@@ -55,52 +73,10 @@ class HomepageFragment : Fragment() {
         findNavController().navigate(R.id.movieInfoFragment)
     }
 
-        /*
-    Requirements
-
-    TODO:
-
-    Priority
-
-    1) Make a nav bar and viewpager item and do the 2 other sections
-    2) Make the Genre Page/Tab Call it Discover (Search By Genre)
-
-    - Make it like a button toggle group and find things by 1 genre
-
-
-    3) Make the Search All Page (
-    4) Get the recycler view to scroll down in the MovieInfoPage
-
-
-
-    5) Add an action Bar
-    6) Put a number on the side of the movie image in the Dashboard
-
-
-    Create a view with the following sections:
-
-    “Movies: Top 5”: Lists the top 5 movies of the data set, according to rating.
-    “Browse by Genre”: Lists available genres.
-    “Browse by All”: Lists available movies.
-
-    Pressing a movie navigates to a detailed view of the movie. (DONE)
-
-    Include title, rating, genres, poster, and description
-    List the cast
-    List the director
-    Pressing a genre navigates to a new view showing the category and associated movies.
-
-    The “Browse by All” and Genre view allows the user to sort the list of movies by an order of their choice (i.e. popularity).
-
-    BONUS: Maybe add like a history of movies the user has clicked on and have that on the home screen
-
-    BONUS: Show genres users were interested in on the home page
-    */
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _top5Adapter = null // prevent memory leak
+        _top5Adapter = null
     }
 
     companion object {

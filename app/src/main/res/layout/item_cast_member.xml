@@ -16,7 +16,7 @@
             android:layout_height="64dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_home_black_24dp"
+            android:src="@drawable/ic_baseline_person_24"
             app:shapeAppearance="@style/ShapeAppearance.Material3.LargeComponent"
             android:text="Image" />
 

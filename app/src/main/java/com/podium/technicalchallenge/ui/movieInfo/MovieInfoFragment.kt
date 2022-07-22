@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.podium.technicalchallenge.DemoViewModel
+import com.podium.technicalchallenge.MainActivity
 import com.podium.technicalchallenge.R
 import com.podium.technicalchallenge.databinding.FragmentMovieInfoBinding
 import com.podium.technicalchallenge.entity.MovieEntity
+import com.podium.technicalchallenge.ui.dashboard.DashboardFragment
 import com.squareup.picasso.Picasso
+import java.util.*
 
 
 class MovieInfoFragment : Fragment() {
@@ -31,13 +34,16 @@ class MovieInfoFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movie = viewModel.liveSelectedMovie.value
 
-        //val verticalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        viewModel.liveLastGenreClicked.value = viewModel.liveSelectedMovie.value?.genres?.random()
+
+        // Clear out discover. it should only be true when hitting a genre on info page
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("discover", false)
+
         val layoutManager = GridLayoutManager(requireContext(), 2)
 
         castAdapter = CastAdapter()
 
         binding.movieCast.adapter = castAdapter
-
         binding.movieCast.layoutManager = layoutManager
 
         viewModel.liveSelectedMovie.value?.let {
@@ -46,13 +52,14 @@ class MovieInfoFragment : Fragment() {
 
         binding.genreButtonsList.removeAllViews()
 
-
         viewModel.liveSelectedMovie.value?.genres?.forEach {
             val chip = layoutInflater.inflate(R.layout.standalone_chip, binding.genreButtonsList, false) as Chip
             chip.text = it
             chip.setOnClickListener {
-                viewModel.liveGenresSelected.value = listOf(chip.text.toString())
-                findNavController().navigate(R.id.discoverFragment)
+                var chipText = chip.text.toString()
+                viewModel.liveGenresSelected.value = listOf(chipText)
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("discover", true)
+                findNavController().popBackStack()
             }
             binding.genreButtonsList.addView(chip as View)
         }
@@ -60,16 +67,6 @@ class MovieInfoFragment : Fragment() {
         Picasso.get().load(viewModel.liveSelectedMovie.value?.posterPath).into(binding.moviePosterImage)
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    fun genreLinkFormat(genres: List<String>) {
-
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

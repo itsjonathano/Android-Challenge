@@ -35,7 +35,13 @@ class CastAdapter(): RecyclerView.Adapter<CastAdapter.CastMemberViewHolder>() {
     override fun onBindViewHolder(holder: CastMemberViewHolder, position: Int) {
         val cast = items[position]
         holder.binding.castMember = cast
-        Picasso.get().load(cast.profilePath).into(holder.binding.portraitImg)
+        try {
+            Picasso.get().load(cast.profilePath).into(holder.binding.portraitImg)
+        }
+        catch (e: IllegalArgumentException) {
+            // Found this error when looking at 100% Wold. Rupert Degas' Name was blank
+            Log.e("Error", "Couldn't load cast member image")
+        }
     }
 
 }

@@ -16,6 +16,6 @@
     app:tabRippleColor="@color/purple_200"
     app:tabSelectedTextColor="@color/white"
     android:background="@color/black"
-    app:tabTextColor="@color/white"
+    app:tabTextColor="@color/light_grey"
     app:tabIconTint="@color/white"
     />

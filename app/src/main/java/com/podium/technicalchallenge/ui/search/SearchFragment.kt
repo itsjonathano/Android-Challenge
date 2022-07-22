@@ -29,7 +29,6 @@ class SearchFragment: Fragment() {
     val liveQuery = MutableLiveData<String?>()
     val liveSort = MutableLiveData<Queries.QuerySort?>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -118,6 +117,7 @@ class SearchFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _filteredAdapter = null
     }
 
     companion object {

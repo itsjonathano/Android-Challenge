@@ -26,6 +26,8 @@ class DemoViewModel : ViewModel() {
 
     val liveGenresSelected = MutableLiveData<List<String>?>()
 
+    val liveLastGenreClicked = MutableLiveData<String?>()
+
     fun getTop5PopularMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = try {
