@@ -1,5 +1,6 @@
 package com.podium.technicalchallenge.ui.movieInfo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,7 @@ import com.podium.technicalchallenge.databinding.ItemCastMemberBinding
 import com.podium.technicalchallenge.entity.CastMember
 import com.squareup.picasso.Picasso
 
-class CastAdapter(): RecyclerView.Adapter<CastAdapter.CastMemberViewHolder>() {
+class CastAdapter: RecyclerView.Adapter<CastAdapter.CastMemberViewHolder>() {
 
     var items: List<CastMember> = listOf()
 
